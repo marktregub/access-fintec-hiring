@@ -9,4 +9,4 @@
  nc 127.0.0.1 2424 < /tmp/1.txt
  where the content of the input file (1.txt) is 1 or more commands like this:
     - [ ] GetAllLowestPrices
-    - [] GetLowestPrice [stockName]
+    - [ ] GetLowestPrice [stockName]
