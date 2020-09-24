@@ -27,16 +27,26 @@ public class StocksProcessor {
 
     private void updateMinimalValue(String source) {
         System.out.println("Processing " + source);
-        InputProcessor.process(source).forEach(stockRecord -> {
-            Double currMin = minimalPrices.get(stockRecord.getName());
-            if(currMin == null || currMin > stockRecord.getPrice()) {
-                minimalPrices.put(stockRecord.getName(), stockRecord.getPrice());
-                if(totalMinPrice == null || stockRecord.getPrice() < totalMinPrice) {
-                    totalMinPrice = stockRecord.getPrice();
-                }
-            }
-        });
+        InputProcessor.process(source).forEach(stockRecord ->
+                minimalPrices.compute(stockRecord.getName(), (stockName, stockPrice) -> {
+                    Double currMin = minimalPrices.get(stockName);
+                    return currMin == null || currMin > stockRecord.getPrice() ? stockRecord.getPrice() : currMin;
+                })
+        );
     }
+
+//    private void updateMinimalValue(String source) {
+//        System.out.println("Processing " + source);
+//        InputProcessor.process(source).forEach(stockRecord -> {
+//            Double currMin = minimalPrices.get(stockRecord.getName());
+//            if(currMin == null || currMin > stockRecord.getPrice()) {
+//                minimalPrices.put(stockRecord.getName(), stockRecord.getPrice());
+//                if(totalMinPrice == null || stockRecord.getPrice() < totalMinPrice) {
+//                    totalMinPrice = stockRecord.getPrice();
+//                }
+//            }
+//        });
+//    }
 
     public static String getLowestPrice(String stock) {
         Double minPrice = minimalPrices.get(stock);
